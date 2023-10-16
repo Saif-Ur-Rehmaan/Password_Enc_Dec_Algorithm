@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>pass hash</h1>
+    <script>
+        function Algorithm() {
+            let characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            const specialCharacters = [
+                '!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', ' ', '¡', '¢', '£', '¤', '¥', '¦', '§', '¨', '©', 'ª', '«', '¬', '®', '¯', '°', '±', '²', '³', '´', 'µ', '¶', '·', '¸', '¹', 'º', '»', '¼', '½', '¾', '¿', '×', '÷', '€', '£', '¥', '©', '®', '™', '!', '@', '#', '$', '%', '^', '&', '*', '{', '}'
+
+            ]
+            let keys = characters.split('');
+            let values = [];
+            let NoofCombinationsRequired = 62;
+            let v1 = [];
+            let objectOfCharacterWithDefination = {}
+            //generating code
+            for (let i = 0; i < characters.length + 5; i++) {
+                va = specialCharacters[i];
+                vb = specialCharacters[i + 1];
+                vb = specialCharacters[i - 1];
+                vc = specialCharacters[i + 2];
+                vd = specialCharacters[i - 2];
+                ve = specialCharacters[i + 3];
+                vf = specialCharacters[i + 3];
+                vg = specialCharacters[i + 4];
+                vh = specialCharacters[i - 4];
+                vi = specialCharacters[i + 5];
+                vj = specialCharacters[i - 5];
+                if (va != undefined && vb != undefined && vc != undefined && vd != undefined && ve != undefined && vf != undefined && vg != undefined && vh != undefined && vi != undefined && vj != undefined) {
+
+                    v1.push(vj + vi + vh + vg + vf + ve + vd + vc + vb + va);
+                    v1.push(va + vb + vc + vd + ve + vf + vg + vh + vi + vj);
+
+                }
+            }
+            //removing 1 of 2 same values
+            v1.forEach(e => {
+                v1.forEach(x => {
+                    if (e == undefined) {
+                        v1.splice(v1.indexOf(e), 1);
+
+                    }
+                    if (e == x) {
+                        v1.splice(v1.indexOf(e), 1);
+                    }
+                });
+            });
+
+            // assigning codeto each character
+            for (i = 0; i < characters.length; i++) {
+                let char = characters[i];
+                let val = v1[i];
+                objectOfCharacterWithDefination[char] = val
+            }
+            return objectOfCharacterWithDefination;
+        }
+        function Password_encode(password) {
+            let objectOfCharacterWithDefination = Algorithm();
+            // encrypting password
+            password;
+            // splitting pass
+            let PassArray = password.split("");
+            // replacing each PassArray val to code 
+            for (const key in objectOfCharacterWithDefination) {
+                let o = objectOfCharacterWithDefination;
+                let k = key;
+                let val = o[k];
+                for (let q = 0; q < PassArray.length; q++) {
+                    const Passchar = PassArray[q];
+                    if (key == Passchar) {
+                        PassArray[q] = val;
+                    }
+                }
+            }
+
+            let encryptedPass = "";
+            //joining passArray
+            encryptedPass = PassArray.join("");
+            return encryptedPass;
+        }
+        function Password_decode(Epass) {
+            Epass;
+            objectOfCharacterWithDefination = Algorithm();
+            let o = objectOfCharacterWithDefination;
+            let decodedpass = "";
+            let EParray = Epass.split("");
+
+            let Arry1 = [ ];
+            for (let i = 0; i < EParray.length; i++) {
+                Arry1.unshift(EParray.splice(0,10));
+            }
+            
+            for (let j = 0; j < Arry1.length; j++) {
+                const Each = Arry1[j];
+                let OneCharCode =Each.join(""); 
+
+                for (const key in o) {
+                    if (Object.hasOwnProperty.call(o, key)) {
+                        const element = o[key];
+                        if (OneCharCode==element) {
+                            decodedpass+=key;
+                        }
+                        
+                    }
+                }
+
+            } 
+        
+            return decodedpass.split("").reverse().join("");
+        }
+
+
+
+
+        //write password in axa 
+        let axa = "pasword";
+        //encoded pass
+        let enpas = Password_encode(axa)
+        console.log(enpas);
+        //decoded pass
+        let a=Password_decode(enpas);
+        console.log(a);
+    </script>
+</body>
+
+</html>
